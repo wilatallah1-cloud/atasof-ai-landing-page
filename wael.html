@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Team — Quick Questionnaire</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, sans-serif;
+    background: #0b0b0f;
+    color: #e8e8ec;
+    line-height: 1.6;
+  }
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 28px 140px;
+  }
+  header {
+    border-bottom: 1px solid #27272a;
+    padding-bottom: 28px;
+    margin-bottom: 36px;
+  }
+  .logo {
+    font-size: 11px; letter-spacing: 3px; color: #9ca3af;
+    text-transform: uppercase; margin-bottom: 10px;
+  }
+  h1 {
+    font-size: 30px; font-weight: 600; margin: 0 0 14px;
+    letter-spacing: -0.5px; line-height: 1.25;
+  }
+  .subtitle {
+    color: #a1a1aa; font-size: 15px; max-width: 640px;
+  }
+  .subtitle strong { color: #e8e8ec; }
+  .callout {
+    background: #151520;
+    border-left: 3px solid #d4af37;
+    padding: 18px 22px;
+    border-radius: 6px;
+    margin: 24px 0 8px;
+    font-size: 14px;
+    color: #d4d4d8;
+  }
+  .callout strong { color: #d4af37; }
+  section {
+    margin-bottom: 32px;
+    padding: 26px 28px;
+    background: #111117;
+    border: 1px solid #1f1f28;
+    border-radius: 10px;
+  }
+  h2 {
+    font-size: 19px;
+    font-weight: 600;
+    margin: 0 0 6px;
+    color: #fff;
+  }
+  .section-num {
+    color: #d4af37; font-size: 12px; font-weight: 500;
+    letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px;
+    display: block;
+  }
+  .section-desc {
+    color: #9ca3af; font-size: 14px; margin: 0 0 20px;
+  }
+  .q { margin-bottom: 22px; }
+  .q-label {
+    display: block;
+    font-weight: 500;
+    color: #f4f4f5;
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+  .q-hint {
+    color: #71717a; font-size: 13px; margin: 2px 0 8px;
+    font-style: italic;
+  }
+  input[type="text"], textarea, select {
+    width: 100%;
+    background: #0b0b0f;
+    border: 1px solid #2d2d38;
+    color: #e8e8ec;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.15s;
+  }
+  textarea { resize: vertical; min-height: 72px; line-height: 1.5; }
+  input:focus, textarea:focus, select:focus {
+    outline: none; border-color: #d4af37;
+  }
+  .check-group, .radio-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  @media (max-width: 640px) { .check-group, .radio-group { grid-template-columns: 1fr; } }
+  .check-group label, .radio-group label {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 9px 12px;
+    background: #0b0b0f;
+    border: 1px solid #2d2d38;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 13.5px;
+  }
+  .check-group label:hover, .radio-group label:hover {
+    border-color: #d4af37;
+    background: #13131a;
+  }
+  .check-group input, .radio-group input {
+    margin-top: 2px;
+    accent-color: #d4af37;
+  }
+
+  /* Agent blocks */
+  .agent-block {
+    margin-bottom: 20px;
+    padding: 24px;
+    background: #0f0f16;
+    border: 1px solid #2d2d38;
+    border-left: 3px solid #d4af37;
+    border-radius: 10px;
+    position: relative;
+  }
+  .agent-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #1f1f28;
+  }
+  .agent-title {
+    font-size: 17px; font-weight: 600; color: #d4af37;
+  }
+  .remove-btn {
+    background: transparent;
+    color: #71717a;
+    border: 1px solid #3f3f46;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.15s;
+  }
+  .remove-btn:hover { color: #ef4444; border-color: #ef4444; }
+
+  .add-agent-btn {
+    width: 100%;
+    padding: 16px;
+    background: transparent;
+    color: #d4af37;
+    border: 2px dashed #3f3f46;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.15s;
+  }
+  .add-agent-btn:hover {
+    border-color: #d4af37;
+    background: rgba(212, 175, 55, 0.05);
+  }
+
+  .starter-pills {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;
+  }
+  .starter-pill {
+    padding: 6px 12px;
+    background: #0b0b0f;
+    border: 1px solid #2d2d38;
+    color: #a1a1aa;
+    border-radius: 14px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .starter-pill:hover {
+    border-color: #d4af37;
+    color: #d4af37;
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(11, 11, 15, 0.95);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid #27272a;
+    padding: 14px 28px;
+    z-index: 100;
+  }
+  .footer-inner {
+    max-width: 780px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .status { color: #9ca3af; font-size: 13px; }
+  .btn {
+    background: #d4af37;
+    color: #0b0b0f;
+    padding: 11px 22px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.15s;
+  }
+  .btn:hover { background: #e8c252; }
+  .btn-sec {
+    background: transparent;
+    color: #e8e8ec;
+    border: 1px solid #3f3f46;
+  }
+  .btn-sec:hover { background: #1f1f28; }
+  #output {
+    display: none;
+    margin-top: 24px;
+    padding: 24px;
+    background: #0b0b0f;
+    border: 1px solid #d4af37;
+    border-radius: 8px;
+  }
+  #output h3 { margin-top: 0; color: #d4af37; }
+  #output textarea {
+    min-height: 380px;
+    font-family: "SF Mono", Monaco, Consolas, monospace;
+    font-size: 12px;
+    background: #000;
+  }
+  .price-card {
+    margin-top: 20px;
+    padding: 20px;
+    background: linear-gradient(135deg, #151520 0%, #0f0f16 100%);
+    border: 1px solid #d4af37;
+    border-radius: 10px;
+  }
+  .price-card h3 {
+    margin: 0 0 8px; font-size: 16px; color: #d4af37;
+  }
+  .price-card p {
+    margin: 0; font-size: 13.5px; color: #a1a1aa;
+  }
+  .grid-2 {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  }
+  @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">ATASOF AI</div>
+    <h1>Quick questionnaire to understand what you want the AIs to do</h1>
+    <p class="subtitle">
+      Hi Wael. Like I mentioned on the call, the best way to actually get great results out of this is to build you
+      <strong>different brains trained for different tasks</strong>. Same way a real business works. You don't hire one person to do everything. You have a CEO, a business analyst, a researcher, each one specialized.
+      That's what we're going to build for you. Each agent specialized in one thing, all talking to each other when needed.
+      <br><br>
+      I just need a few answers below so I understand what you actually want each one to do. Once you send this back, I'll put together an exact scope and price for your build. <strong>I'll make sure that you get a really good price</strong> (what we'd charge other clients is higher).
+      <br><br>
+      We're really busy right now, obviously with a lot of demand for AI, but I'll personally oversee this for you and work on it myself. I'll make sure it's built to do exactly what you want it to do, and exactly how you want it built.
+    </p>
+    <div class="callout">
+      <strong>Quick thing that'll show you what we mean.</strong> This questionnaire you're reading right now? William didn't write it. <em>I did.</em> I'm a custom agent on Atasof's team, specialized in client onboarding. I know Atasof's offers, pricing tiers, build process, and how to structure these kinds of docs. William had a conversation with me about your call (same way you talk to JLO) and I put this together for you. That's the kind of thing we're going to build for <em>your</em> business. A team of specialized agents that actually do work, not just chat.
+      <br><br>
+      <strong>What the top tier includes.</strong> Your agents get upgraded every time the AI improves. Every new training, every model upgrade, every new capability we build for our own in-house agents (like me) gets applied to yours too. Over time it evolves from "smart assistant" into something closer to a real employee that runs tasks on its own, <em>Jarvis-style</em>. That's where we're going, and you get to ride that curve with us.
+      <br><br>
+      Should take about 15-20 minutes. Answers save automatically as you type.
+    </div>
+  </header>
+
+  <!-- GLOBAL CONTEXT -->
+  <section>
+    <span class="section-num">Part 1 · About your day</span>
+    <h2>Before we get into the agents</h2>
+    <p class="section-desc">Just 3 quick questions so we understand where you're spending your time today.</p>
+
+    <div class="q">
+      <label class="q-label">Where do you waste the most time every day?</label>
+      <div class="q-hint">Examples: reading long financial reports, chasing suppliers, searching for old emails, catching up on news, doing research you could delegate.</div>
+      <textarea id="g_1"></textarea>
+    </div>
+
+    <div class="q">
+      <label class="q-label">Where do you feel like you're making decisions with incomplete information?</label>
+      <div class="q-hint">Where you wish you had better data, faster, before acting. Examples: Egyptian market reality before investing, supplier credibility before ordering, dealership trend catching you off guard.</div>
+      <textarea id="g_2"></textarea>
+    </div>
+
+    <div class="q">
+      <label class="q-label">If you could hire one human expert tomorrow for your business, who would it be and what would they do for you?</label>
+      <div class="q-hint">This helps us understand the #1 gap. Example: "A full-time Egypt market analyst who finds me distributors and verifies suppliers" or "A dealership CFO who tells me what to do with my margins every month."</div>
+      <textarea id="g_3"></textarea>
+    </div>
+  </section>
+
+  <!-- AGENTS -->
+  <section>
+    <span class="section-num">Part 2 · Your agents</span>
+    <h2>Build your AI team</h2>
+    <p class="section-desc">Below is one agent block. Fill it in for every agent you want. Add more as you go.</p>
+
+    <div style="margin-bottom: 14px; padding: 14px 16px; background: #151520; border-radius: 6px; font-size: 13px; color: #a1a1aa;">
+      <strong style="color: #d4af37;">Need inspiration?</strong> Tap a starter to pre-fill an agent. You can edit everything after.
+      <div class="starter-pills">
+        <span class="starter-pill" onclick="addStarterAgent('egypt')">Egyptian Business Specialist</span>
+        <span class="starter-pill" onclick="addStarterAgent('dealership')">Dealership Financial Analyst</span>
+        <span class="starter-pill" onclick="addStarterAgent('china')">China Sourcing Agent</span>
+        <span class="starter-pill" onclick="addStarterAgent('jlo')">Personal Assistant (master)</span>
+        <span class="starter-pill" onclick="addStarterAgent('investor')">Investment + Markets (stocks, crypto, IPOs)</span>
+        <span class="starter-pill" onclick="addStarterAgent('blank')">+ Blank Agent</span>
+      </div>
+    </div>
+
+    <div id="agents-container"></div>
+
+    <button class="add-agent-btn" onclick="addAgent()">+ Add another agent</button>
+  </section>
+
+  <!-- HANDOFFS -->
+  <section>
+    <span class="section-num">Part 3 · How they work together</span>
+    <h2>Agent handoffs and scheduling</h2>
+    <p class="section-desc">Optional. Skip if you're not sure yet.</p>
+
+    <div class="q">
+      <label class="q-label">Which agents should hand work to each other?</label>
+      <div class="q-hint">Example: "China Sourcing finds a supplier, then Email Drafter writes the RFQ in my voice, then JLO pings me on Telegram when the supplier replies."</div>
+      <textarea id="h_1"></textarea>
+    </div>
+
+    <div class="q">
+      <label class="q-label">Any tasks you want running on a schedule without you asking?</label>
+      <div class="q-hint">Examples: daily morning brief at 7am, weekly dealership performance report Monday morning, daily Skyscanner price check, weekly SpaceX IPO update.</div>
+      <textarea id="h_2"></textarea>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section>
+    <span class="section-num">Part 4 · Last thing</span>
+    <h2>Anything we didn't ask</h2>
+    <div class="q">
+      <label class="q-label">Is there something important we missed? Anything you want to make sure we know before we start building?</label>
+      <textarea id="c_1" style="min-height: 100px;"></textarea>
+    </div>
+
+    <div class="price-card">
+      <h3>What happens next</h3>
+      <p>
+        Once you send this back, William will look at exactly what you're asking for: how many agents, what they need to know, what tools to connect, how much training and data they need. From there he'll send you back a clear scope per agent and an exact price tailored to your build. No vague estimates, no surprises later.
+      </p>
+    </div>
+  </section>
+
+  <div id="output">
+    <h3>Your answers</h3>
+    <p style="color: #a1a1aa; font-size: 13px; margin-top: 0;">Copy the text below and WhatsApp / email it to William. Or download it.</p>
+    <textarea id="output-text" readonly></textarea>
+    <div style="margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap;">
+      <button class="btn" onclick="copyOutput()">Copy to clipboard</button>
+      <button class="btn btn-sec" onclick="downloadAnswers()">Download as file</button>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-inner">
+    <div class="status" id="status">Saving automatically</div>
+    <div style="display: flex; gap: 10px;">
+      <button class="btn btn-sec" onclick="clearForm()">Clear all</button>
+      <button class="btn" onclick="generateOutput()">Generate my answers</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'jlo_v2_questionnaire';
+  let agentCount = 0;
+
+  const TOOL_OPTIONS = [
+    ['gcal', 'Google Calendar'],
+    ['gmail', 'Gmail'],
+    ['gdrive', 'Google Drive'],
+    ['gsheets', 'Google Sheets'],
+    ['whatsapp', 'WhatsApp'],
+    ['telegram', 'Telegram'],
+    ['websearch', 'Web search / live internet'],
+    ['pdf', 'PDF reading + analysis'],
+    ['excel', 'Excel / spreadsheet math'],
+    ['stocks', 'Stock market data'],
+    ['crm', 'Dealership CRM (CDK/Reynolds/etc.)'],
+    ['accounting', 'QuickBooks / accounting'],
+    ['shipping', 'Shipping / container tracking'],
+    ['image_gen', 'Image generation'],
+    ['voice', 'Voice (talk to it)'],
+    ['other', 'Other (specify in notes)'],
+  ];
+
+  const STARTERS = {
+    egypt: {
+      name: 'Egyptian Business Specialist',
+      job: 'Research Egyptian markets, regulations, distributors, and local business conditions',
+      knowledge: 'Egyptian import tariff codes and customs rules, Egyptian corporate tax law, Investment Law 72 of 2017, banking rules for letters of credit, major distributor networks by category, local market sizes for target product categories',
+      tasks: 'Find Egyptian distributors for a product category\nCalculate import duties + total landed cost from China to Egypt\nResearch competitors selling a product in Egypt\nVerify if an Egyptian business is legitimate\nDraft outreach to Egyptian partners in Arabic or English',
+      tools_pre: ['websearch', 'pdf', 'excel', 'gmail'],
+      accuracy: 'advisory',
+      wins: 'Every week I get 2-3 verified Egyptian distributor contacts for categories I care about, with real phone numbers and real people I can call',
+    },
+    dealership: {
+      name: 'Dealership Financial Analyst',
+      job: 'Deep financial analysis of Infiniti + Subaru stores, cost reduction, NADA benchmarks',
+      knowledge: 'Every monthly financial statement for both stores since 2022, NADA benchmark ratios and targets, expense structure analysis, department P&L fundamentals, service absorption mechanics, factory incentive programs for Infiniti and Subaru',
+      tasks: 'Compare my dealership against NADA benchmarks\nModel cost reduction scenarios (what if we close body shop, reduce headcount, etc.)\nAnalyze a new monthly statement and highlight what changed\nProject Q+1 cash flow based on current trend\nFlag anomalies in expense structure',
+      tools_pre: ['pdf', 'excel', 'gdrive', 'gmail'],
+      accuracy: 'mission_critical',
+      wins: 'I save 4-6 hours a month on reviewing statements and get a concrete action list from every review',
+    },
+    china: {
+      name: 'China Sourcing Agent',
+      job: 'Find Chinese manufacturers, compare prices, manage supplier outreach',
+      knowledge: 'Major Chinese B2B platforms (Alibaba, Made-in-China, Global Sources), typical FOB/CIF pricing structures, minimum order quantities by category, Canton Fair phases and attendees, container shipping economics, how to verify a real factory vs a trading company',
+      tasks: 'Find 5-10 manufacturers for a product category with contact info\nCompare FOB prices across suppliers\nDraft RFQ emails (English, and Chinese when helpful)\nTrack who I contacted, who replied, who went silent\nVerify a factory is real via online signals',
+      tools_pre: ['websearch', 'gmail', 'whatsapp', 'pdf', 'excel'],
+      accuracy: 'advisory',
+      wins: 'I walk into any product category cold and within 48 hours have 5 real factory contacts and a price comparison',
+    },
+    jlo: {
+      name: 'Personal Assistant',
+      job: 'Daily morning brief, calendar, email, reminders, voice — the hub that routes to the specialist agents',
+      knowledge: 'My schedule and preferences, my contacts, my recurring needs (Repatha injections, flight monitoring, stock alerts), how I like my brief delivered',
+      tasks: 'Morning brief every weekday (calendar + emails + tasks + news)\nRemind me about medication, appointments, deadlines\nDraft email replies I can approve and send\nAnswer general questions across my business\nRoute requests to the specialist agents when needed',
+      tools_pre: ['gcal', 'gmail', 'gdrive', 'telegram', 'voice', 'websearch'],
+      accuracy: 'advisory',
+      wins: 'Every morning starts with a clear brief and I don\'t miss anything important all day',
+    },
+    investor: {
+      name: 'Investment + Markets Research',
+      job: 'Stock + crypto research, IPO tracking, portfolio watch, Zakat calculations',
+      knowledge: 'US stock market fundamentals, current portfolio holdings, IPO pipelines (SpaceX, etc.), major crypto assets and on-chain trends, Zakat rules for business owners + crypto holdings, Islamic finance principles, US tax law basics for investors',
+      tasks: 'Daily stock + crypto portfolio update with notable moves\nTrack SpaceX IPO news + other watchlist events\nResearch a specific stock, crypto, or company on request\nFlag market or crypto events that might affect my positions\nCalculate annual Zakat across stocks, crypto, and holdings',
+      tools_pre: ['websearch', 'stocks', 'telegram', 'pdf'],
+      accuracy: 'research',
+      wins: 'I never miss SpaceX IPO news or major moves in my stocks/crypto, and my Zakat is calculated correctly every year without me thinking',
+    },
+    blank: {
+      name: '',
+      job: '',
+      knowledge: '',
+      tasks: '',
+      tools_pre: [],
+      accuracy: 'advisory',
+      wins: '',
+    },
+  };
+
+  function toolsHtml(prefix, preChecked) {
+    return TOOL_OPTIONS.map(([val, label]) => {
+      const checked = preChecked && preChecked.includes(val) ? 'checked' : '';
+      return `<label><input type="checkbox" name="${prefix}_tools" value="${val}" ${checked}> ${label}</label>`;
+    }).join('');
+  }
+
+  function accuracyHtml(prefix, preSelected) {
+    const opts = [
+      ['research', 'Research — "good enough" is fine, I\'ll verify'],
+      ['advisory', 'Advisory — accurate with sources cited, I check before acting'],
+      ['mission_critical', 'Mission-critical — must be exact (financial numbers, legal, contracts)'],
+    ];
+    return opts.map(([val, label]) => {
+      const checked = preSelected === val ? 'checked' : '';
+      return `<label><input type="radio" name="${prefix}_accuracy" value="${val}" ${checked}> ${label}</label>`;
+    }).join('');
+  }
+
+  function renderAgent(idx, data = STARTERS.blank) {
+    const prefix = `a_${idx}`;
+    const html = `
+      <div class="agent-block" id="agent_${idx}">
+        <div class="agent-block-header">
+          <div class="agent-title">Agent ${idx}</div>
+          <button class="remove-btn" onclick="removeAgent(${idx})">Remove</button>
+        </div>
+
+        <div class="q">
+          <label class="q-label">Agent name</label>
+          <div class="q-hint">What would you call this employee? "Egyptian Business Specialist", "Dealership CFO", "Amira".</div>
+          <input type="text" id="${prefix}_name" value="${escapeAttr(data.name)}">
+        </div>
+
+        <div class="q">
+          <label class="q-label">One-line job description</label>
+          <div class="q-hint">What is this agent a specialist in?</div>
+          <input type="text" id="${prefix}_job" value="${escapeAttr(data.job)}">
+        </div>
+
+        <div class="q">
+          <label class="q-label">What should this agent KNOW cold?</label>
+          <div class="q-hint">Specific knowledge, laws, rules, frameworks, data it needs to be an expert in. We train it on this. Example: "Egyptian import tariff codes", "NADA benchmark ratios", "FOB vs CIF pricing".</div>
+          <textarea id="${prefix}_knowledge">${escapeText(data.knowledge)}</textarea>
+        </div>
+
+        <div class="q">
+          <label class="q-label">Top 5 tasks you'll ask it to do</label>
+          <div class="q-hint">Be concrete. Each task should be something you'd actually ask on a real day. One per line.</div>
+          <textarea id="${prefix}_tasks" style="min-height: 110px;">${escapeText(data.tasks)}</textarea>
+        </div>
+
+        <div class="q">
+          <label class="q-label">What tools does it need access to?</label>
+          <div class="check-group">
+            ${toolsHtml(prefix, data.tools_pre)}
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="q-label">How accurate does this agent have to be?</label>
+          <div class="radio-group">
+            ${accuracyHtml(prefix, data.accuracy)}
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="q-label">What would make this agent feel worth it to you in 60 days?</label>
+          <div class="q-hint">How would you know it's working? What's the concrete outcome?</div>
+          <textarea id="${prefix}_wins">${escapeText(data.wins)}</textarea>
+        </div>
+      </div>
+    `;
+    return html;
+  }
+
+  function escapeAttr(s) { return (s || '').replace(/"/g, '&quot;'); }
+  function escapeText(s) { return (s || '').replace(/</g, '&lt;'); }
+
+  function addAgent(data) {
+    agentCount++;
+    const container = document.getElementById('agents-container');
+    container.insertAdjacentHTML('beforeend', renderAgent(agentCount, data));
+    attachListeners();
+    saveState();
+  }
+
+  function addStarterAgent(key) {
+    addAgent(STARTERS[key]);
+    setTimeout(() => {
+      const el = document.getElementById(`agent_${agentCount}`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 50);
+  }
+
+  function removeAgent(idx) {
+    const el = document.getElementById(`agent_${idx}`);
+    if (el) el.remove();
+    saveState();
+  }
+
+  function getAllInputs() {
+    return document.querySelectorAll('input, textarea, select');
+  }
+
+  function saveState() {
+    const state = { agents: [] };
+    // Save global/handoff/closing text fields
+    ['g_1','g_2','g_3','h_1','h_2','c_1'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) state[id] = el.value;
+    });
+    // Save agents
+    document.querySelectorAll('.agent-block').forEach(block => {
+      const id = block.id.replace('agent_', '');
+      const prefix = `a_${id}`;
+      const ag = { id };
+      ['name','job','knowledge','tasks','wins'].forEach(f => {
+        const el = document.getElementById(`${prefix}_${f}`);
+        if (el) ag[f] = el.value;
+      });
+      ag.tools = [];
+      document.querySelectorAll(`input[name="${prefix}_tools"]:checked`).forEach(c => ag.tools.push(c.value));
+      const acc = document.querySelector(`input[name="${prefix}_accuracy"]:checked`);
+      if (acc) ag.accuracy = acc.value;
+      state.agents.push(ag);
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    document.getElementById('status').textContent = 'Saved ' + new Date().toLocaleTimeString();
+  }
+
+  function loadState() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    try {
+      const state = JSON.parse(raw);
+      ['g_1','g_2','g_3','h_1','h_2','c_1'].forEach(id => {
+        if (state[id] !== undefined) {
+          const el = document.getElementById(id);
+          if (el) el.value = state[id];
+        }
+      });
+      if (state.agents && state.agents.length > 0) {
+        state.agents.forEach(ag => {
+          const data = {
+            name: ag.name || '',
+            job: ag.job || '',
+            knowledge: ag.knowledge || '',
+            tasks: ag.tasks || '',
+            wins: ag.wins || '',
+            tools_pre: ag.tools || [],
+            accuracy: ag.accuracy || 'advisory',
+          };
+          addAgent(data);
+        });
+      }
+    } catch (e) { console.error(e); }
+  }
+
+  function attachListeners() {
+    getAllInputs().forEach(el => {
+      if (!el.dataset.listening) {
+        el.addEventListener('input', saveState);
+        el.addEventListener('change', saveState);
+        el.dataset.listening = 'true';
+      }
+    });
+  }
+
+  function clearForm() {
+    if (!confirm('Clear all your answers? This cannot be undone.')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+
+  function collectAnswers() {
+    let out = 'JLO v2 — AI TEAM QUESTIONNAIRE\n';
+    out += '='.repeat(55) + '\n';
+    out += 'Completed: ' + new Date().toLocaleString() + '\n\n';
+
+    out += '\nPART 1 — ABOUT YOUR DAY\n' + '-'.repeat(55) + '\n';
+    const gQs = [
+      ['g_1', 'Where do you waste the most time every day?'],
+      ['g_2', 'Where are you making decisions with incomplete info?'],
+      ['g_3', 'One human expert you\'d hire tomorrow?'],
+    ];
+    gQs.forEach(([id, q]) => {
+      const v = document.getElementById(id).value.trim();
+      out += `\nQ: ${q}\nA: ${v || '(no answer)'}\n`;
+    });
+
+    out += '\n\nPART 2 — YOUR AGENTS\n' + '='.repeat(55) + '\n';
+    const agents = document.querySelectorAll('.agent-block');
+    if (agents.length === 0) {
+      out += '\n(no agents defined)\n';
+    } else {
+      agents.forEach((block, i) => {
+        const id = block.id.replace('agent_', '');
+        const prefix = `a_${id}`;
+        const name = document.getElementById(`${prefix}_name`).value.trim() || `Agent ${id}`;
+        const job = document.getElementById(`${prefix}_job`).value.trim();
+        const knowledge = document.getElementById(`${prefix}_knowledge`).value.trim();
+        const tasks = document.getElementById(`${prefix}_tasks`).value.trim();
+        const wins = document.getElementById(`${prefix}_wins`).value.trim();
+        const tools = [];
+        document.querySelectorAll(`input[name="${prefix}_tools"]:checked`).forEach(c => {
+          const label = c.closest('label');
+          tools.push(label ? label.innerText.trim() : c.value);
+        });
+        const acc = document.querySelector(`input[name="${prefix}_accuracy"]:checked`);
+        const accLabel = acc ? acc.closest('label').innerText.trim() : '(not set)';
+
+        out += `\n\n▸ AGENT ${i + 1}: ${name}\n${'-'.repeat(55)}\n`;
+        out += `Job: ${job || '(no job description)'}\n\n`;
+        out += `Knowledge to train on:\n${knowledge || '(none specified)'}\n\n`;
+        out += `Top tasks:\n${tasks || '(none specified)'}\n\n`;
+        out += `Tools needed:\n${tools.length ? tools.map(t => '  • ' + t).join('\n') : '  (none selected)'}\n\n`;
+        out += `Accuracy level: ${accLabel}\n\n`;
+        out += `Worth-it outcome (60 days):\n${wins || '(none specified)'}\n`;
+      });
+    }
+
+    out += '\n\nPART 3 — HANDOFFS + SCHEDULED TASKS\n' + '-'.repeat(55) + '\n';
+    out += `\nQ: Which agents should hand work to each other?\nA: ${document.getElementById('h_1').value.trim() || '(skipped)'}\n`;
+    out += `\nQ: Scheduled/recurring tasks?\nA: ${document.getElementById('h_2').value.trim() || '(skipped)'}\n`;
+
+    out += '\n\nPART 4 — ANYTHING ELSE\n' + '-'.repeat(55) + '\n';
+    out += `\nA: ${document.getElementById('c_1').value.trim() || '(nothing else)'}\n`;
+
+    return out;
+  }
+
+  function generateOutput() {
+    const text = collectAnswers();
+    document.getElementById('output-text').value = text;
+    document.getElementById('output').style.display = 'block';
+    document.getElementById('output').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function copyOutput() {
+    const el = document.getElementById('output-text');
+    el.select();
+    document.execCommand('copy');
+    const btn = event.target;
+    const original = btn.textContent;
+    btn.textContent = 'Copied ✓';
+    setTimeout(() => btn.textContent = original, 2000);
+  }
+
+  function downloadAnswers() {
+    const text = document.getElementById('output-text').value;
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'jlo-v2-answers-' + new Date().toISOString().slice(0,10) + '.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    loadState();
+    attachListeners();
+    // If no agents loaded from state, add one blank to start
+    if (document.querySelectorAll('.agent-block').length === 0) {
+      addAgent(STARTERS.blank);
+    }
+  });
+</script>
+</body>
+</html>
