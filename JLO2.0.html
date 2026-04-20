@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>JLO v2. Prepared for Wael.</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --panel: #141414;
+    --panel-hi: #1a1a1a;
+    --border: #262626;
+    --accent: #d4a574;
+    --accent-soft: rgba(212, 165, 116, 0.12);
+    --text: #e8e8e8;
+    --text-dim: #9a9a9a;
+    --text-faint: #6b6b6b;
+    --success: #7bb661;
+    --warn: #c77b5a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 80px 40px 120px;
+  }
+  header.top {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 40px;
+    margin-bottom: 60px;
+  }
+  .brand {
+    font-size: 12px;
+    letter-spacing: 0.35em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    font-weight: 500;
+  }
+  h1 {
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  h1 .subtle {
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+  .meta {
+    color: var(--text-faint);
+    font-size: 14px;
+    letter-spacing: 0.05em;
+  }
+  .meta span { margin-right: 20px; }
+  h2 {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-top: 80px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  h2.no-line { border: none; padding-bottom: 0; }
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  h4 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+    margin-top: 20px;
+  }
+  p { margin-bottom: 16px; color: var(--text); }
+  p.lead {
+    font-size: 18px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  ul { padding-left: 20px; margin-bottom: 16px; }
+  li { margin-bottom: 8px; color: var(--text-dim); }
+  li strong { color: var(--text); font-weight: 600; }
+  strong { color: var(--text); }
+  .agent {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 24px;
+  }
+  .agent-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .agent-name {
+    font-size: 22px;
+    font-weight: 600;
+  }
+  .agent-price {
+    font-size: 14px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+  .agent-role {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .outcome {
+    background: var(--accent-soft);
+    border-left: 2px solid var(--accent);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin-top: 20px;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .outcome strong { color: var(--accent); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 15px;
+  }
+  th, td {
+    text-align: left;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    color: var(--text-faint);
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  td { color: var(--text-dim); }
+  td:last-child { text-align: right; color: var(--text); font-variant-numeric: tabular-nums; }
+  tr.total td {
+    color: var(--text);
+    font-weight: 600;
+    border-top: 1px solid var(--accent);
+    border-bottom: none;
+    padding-top: 18px;
+  }
+  tr.bundle td {
+    color: var(--accent);
+    font-size: 18px;
+    font-weight: 600;
+    padding-top: 14px;
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 32px;
+  }
+  @media (max-width: 720px) { .pricing-grid { grid-template-columns: 1fr; } }
+  .tier {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+  }
+  .tier.hi {
+    border-color: var(--accent);
+    background: linear-gradient(180deg, var(--panel-hi) 0%, var(--panel) 100%);
+  }
+  .tier-badge {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 4px 10px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+  }
+  .tier-price {
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .tier-price .unit {
+    font-size: 14px;
+    color: var(--text-faint);
+    font-weight: 400;
+  }
+  .tier-desc {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  .tier ul { padding-left: 0; list-style: none; }
+  .tier li {
+    padding-left: 20px;
+    position: relative;
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+  .tier li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .setup-hero {
+    background: linear-gradient(180deg, var(--panel-hi) 0%, var(--panel) 100%);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 40px;
+    margin-top: 32px;
+    text-align: center;
+  }
+  .setup-hero .label {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .setup-hero .big {
+    font-size: 56px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--text);
+  }
+  .setup-hero .strike {
+    color: var(--text-faint);
+    text-decoration: line-through;
+    font-size: 18px;
+    margin-top: 8px;
+  }
+  .limits {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+  }
+  .limits h3 { color: var(--warn); margin-bottom: 20px; }
+  .divider {
+    border: none;
+    height: 1px;
+    background: var(--border);
+    margin: 80px 0 60px;
+  }
+  footer.close {
+    margin-top: 80px;
+    padding: 40px 36px;
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    background: linear-gradient(180deg, var(--panel-hi) 0%, var(--panel) 100%);
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.7;
+  }
+  footer.close p {
+    margin-bottom: 20px;
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.7;
+  }
+  footer.close p:last-of-type { margin-bottom: 0; }
+  .sig {
+    font-style: italic;
+    color: var(--accent);
+    margin-top: 28px !important;
+    font-size: 16px !important;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="top">
+    <div class="brand">Atasof AI</div>
+    <h1>JLO v2.<br><span class="subtle">Your private team of AI agents.</span></h1>
+    <div class="meta">
+      <span>Prepared for Wael</span>
+      <span>April 2026</span>
+    </div>
+  </header>
+
+  <p class="lead">
+    This is the full proposal for JLO v2, a private platform I will build and operate for you. The same architecture we use internally at Atasof AI to run our own business, customized with six agents trained on your world: cars, Egypt, China, investments, plus a master hub and a coach to teach you how to use them.
+  </p>
+
+  <p class="lead">
+    Below is exactly what you are getting, what each agent can realistically do at today's state of AI, what it cannot do (I would rather tell you up front than disappoint you later), timeline, and the price.
+  </p>
+
+  <h2>The Platform</h2>
+  <p>
+    Everything runs on a custom-built application we developed in-house at Atasof AI to operate and monitor our own internal agents. The same tool we use every day for our own business, configured and branded for you. Not a generic off-the-shelf product. What you get:
+  </p>
+  <ul>
+    <li><strong>A single voice + chat interface</strong> you talk to (JLO), accessible on phone, laptop, and tablet</li>
+    <li><strong>Five specialist agents</strong> JLO routes to behind the scenes. You can also talk to each one directly when you want to go deep on a topic</li>
+    <li><strong>An AI Usage Coach</strong> trained on your specific agents, to teach you how to get the best out of them</li>
+    <li><strong>Private memory</strong> stored privately in your own backend. Every conversation, every document you upload, stays private to you</li>
+    <li><strong>Push-to-talk voice on every agent.</strong> Speak your message, get the answer back instantly as text and spoken audio at the same time. Included at no extra cost. This is different from a full always-on voice call agent, which would be a separate build</li>
+    <li><strong>Daily morning brief</strong> delivered every weekday at the time you choose</li>
+    <li><strong>Telegram + WhatsApp</strong> for notifications and on-the-go chat</li>
+  </ul>
+
+  <h2>The Agents</h2>
+
+  <div class="agent">
+    <div class="agent-head">
+      <div class="agent-name">JLO (Master)</div>
+      <div class="agent-price">$4,000 normal rate</div>
+    </div>
+    <div class="agent-role">The hub. The voice you actually talk to. Routes every request to the right specialist and delivers one clean answer back.</div>
+
+    <h4>What she does</h4>
+    <ul>
+      <li>Morning brief every weekday: calendar, email summary, tasks, medication reminders, your Whoop recovery and sleep, your favorite teams (Liverpool, Miami Heat, Inter Miami, Egyptian national team, Premier League), weather, and flight status when you are traveling</li>
+      <li>Voice interface you can talk to naturally on phone, laptop, or tablet</li>
+      <li>Drafts email replies you approve before sending</li>
+      <li>Dining, hotel, and tourist recommendations anywhere in the world</li>
+      <li>Routes every question to the right specialist and brings back one clean answer</li>
+      <li>Tracks your recurring needs (Repatha injections, flight monitoring, stock alerts)</li>
+    </ul>
+
+    <h4>Connections</h4>
+    <ul>
+      <li>Google Calendar, Gmail, Google Drive</li>
+      <li>Whoop (recovery, HRV, sleep, strain)</li>
+      <li>Telegram and WhatsApp</li>
+      <li>Sports data for your favorite teams</li>
+      <li>Dining, hotel, and location data</li>
+      <li>Live web search</li>
+      <li>Flight tracking</li>
+    </ul>
+
+    <h4>Honest limits</h4>
+    <ul>
+      <li>She gets more personal over time. Week one she is helpful. By week three she feels like yours</li>
+      <li>Dining and hotel recommendations are strongest in well-known cities. Off-the-grid spots are more generic</li>
+      <li>For flight tracking, she needs the flight number or confirmation email</li>
+    </ul>
+
+    <h4>What you will need to provide</h4>
+    <ul>
+      <li>Your Google account (calendar, email, drive)</li>
+      <li>Your Whoop login (you keep your existing Whoop subscription)</li>
+      <li>Your medications, favorite teams, and the time you want the morning brief</li>
+      <li>Telegram and WhatsApp access</li>
+    </ul>
+
+    <div class="outcome">
+      <strong>60-day outcome:</strong> Every morning starts with a clear brief. You never miss medication, an appointment, or a major update on your teams, health, or portfolio. She becomes the one interface you use for everything.
+    </div>
+  </div>
+
+  <div class="agent">
+    <div class="agent-head">
+      <div class="agent-name">Nancy (Egypt)</div>
+      <div class="agent-price">$3,500 normal rate</div>
+    </div>
+    <div class="agent-role">Your full-time Egyptian market analyst. Regulations, distributors, market sizing, feasibility studies, partner outreach.</div>
+
+    <h4>What she does</h4>
+    <ul>
+      <li>Trained by us on Egyptian tariffs, customs rules, corporate tax law, Investment Law 72 of 2017, and letter-of-credit banking rules. We keep her current</li>
+      <li>Builds full landed-cost spreadsheets from China to Egypt. Duties, VAT, customs, and inland transport are her exact math. Factory FOB prices come from Zepy's RFQ work, freight from your forwarder quote. She plugs them in and you see the true delivered cost</li>
+      <li>Deep research on your target industries: concentrate juice and vegetables, golf carts, electric vehicles, outdoor kitchen and living</li>
+      <li>Finds Egyptian distributors, suppliers, and manufacturers by category</li>
+      <li>Writes full feasibility studies: market size, demand, gaps, competitors, capex, timeline</li>
+      <li>Knows Egypt by region (demographics, economic conditions)</li>
+      <li>Drafts outreach messages to partners and distributors</li>
+      <li>Screens Egyptian businesses for legitimacy before you engage them</li>
+    </ul>
+
+    <h4>Connections</h4>
+    <ul>
+      <li>Gmail, Google Drive, Google Sheets</li>
+      <li>Egyptian business directories and national statistics</li>
+      <li>Global trade and tariff databases</li>
+      <li>LinkedIn search</li>
+      <li>Live web search</li>
+    </ul>
+
+    <h4>Honest limits</h4>
+    <ul>
+      <li>She finds and researches distributor leads. Final phone verification stays with you. Realistic pace is 1 to 3 researched leads per week</li>
+      <li>Landed-cost math is exact. Freight and factory quotes are estimates until the real ones come in (we swap them in when they do)</li>
+      <li>Market size numbers are research-grade with citations, not paid-database figures. For bank financing, commission a proper study</li>
+      <li>Tariff rates change through the year. We refresh her library quarterly</li>
+    </ul>
+
+    <h4>What you will need to provide</h4>
+    <ul>
+      <li>Any Egyptian industry reports, regulations, or distributor lists you already have (helps her start sharper, but we do the heavy lifting on research)</li>
+      <li>Optional: a paid market research report if you ever need bank-grade sizing for financing (roughly $1,500 to $5,000 per report, we source on your behalf only if you ask)</li>
+    </ul>
+
+    <div class="outcome">
+      <strong>60-day outcome:</strong> Every week you have fresh Egyptian distributor leads in categories you care about, plus on-demand feasibility studies for any new opportunity (including your concentrate juice project).
+    </div>
+  </div>
+
+  <div class="agent">
+    <div class="agent-head">
+      <div class="agent-name">Jarvis (Car Business)</div>
+      <div class="agent-price">$5,000 normal rate</div>
+    </div>
+    <div class="agent-role">Deep financial analysis for your Infiniti and Subaru stores. NADA benchmarks, cost modeling, statement review, competitor monitoring, fixed ops, finance chargebacks.</div>
+
+    <h4>What he does</h4>
+    <ul>
+      <li>Ingests every monthly financial statement (Infiniti and Subaru, back to 2022)</li>
+      <li>Benchmarks you against NADA ratios from your 20-group reports</li>
+      <li>Reviews every new statement: what changed, what to fix, what opportunities opened</li>
+      <li>Models cost reduction scenarios (close body shop, reduce headcount, restructure fixed ops)</li>
+      <li>Projects next-quarter cash flow from your trend</li>
+      <li>Full fixed-ops, service absorption, and F&I chargeback analysis</li>
+      <li>Monitors competitor pricing live across CarGurus, AutoTrader, and competitor dealer websites</li>
+      <li>Briefed on current AI use in automotive retail and top AI-powered marketing vendors for dealerships</li>
+    </ul>
+
+    <h4>Connections</h4>
+    <ul>
+      <li>Gmail, Google Drive, Google Sheets</li>
+      <li>PDF and Excel statement ingestion</li>
+      <li>Competitor dealer websites (CarGurus, AutoTrader, local competitors)</li>
+      <li>Chart and visual generation</li>
+    </ul>
+
+    <h4>Honest limits</h4>
+    <ul>
+      <li>NADA Composite data is licensed. He benchmarks against the reports you already get through your 20-group. This is how real dealers use it</li>
+      <li>Factory incentive programs need a one-time upload of your Infiniti IFS and Subaru SOA dealer-portal docs. After that, he tracks them cleanly</li>
+      <li>He is a financial analyst, not a mechanic. Strategic cross-brand knowledge, not transmission-code depth</li>
+    </ul>
+
+    <h4>What you will need to provide</h4>
+    <ul>
+      <li>Monthly financial statements for both stores back to 2022</li>
+      <li>Your 20-group NADA Composite reports (most dealers get these bundled with 20-group membership you likely already have)</li>
+      <li>Factory incentive program docs from your Infiniti and Subaru dealer portals</li>
+      <li>Department P&L detail if you want full fixed-ops and F&I analysis</li>
+      <li>The list of competitor dealers you want to monitor</li>
+    </ul>
+
+    <div class="outcome">
+      <strong>60-day outcome:</strong> You save 4 to 6 hours a month on statement review. Every review ends with a concrete action list. Over time he becomes the analyst who catches things you would miss.
+    </div>
+  </div>
+
+  <div class="agent">
+    <div class="agent-head">
+      <div class="agent-name">Zepy (China Sourcing)</div>
+      <div class="agent-price">$3,500 normal rate</div>
+    </div>
+    <div class="agent-role">Chinese manufacturer research, price comparison, factory verification, RFQ drafting, trade show intelligence.</div>
+
+    <h4>What she does</h4>
+    <ul>
+      <li>Finds 5 to 10 manufacturers per product category across Alibaba, Made-in-China, and Global Sources</li>
+      <li>Compares FOB and CIF prices across suppliers in a clean table</li>
+      <li>Drafts RFQ emails ready to send to factories</li>
+      <li>Verifies factory legitimacy via Chinese business registry lookups, Alibaba Gold Supplier age, Trade Assurance signals, and factory vs trading company heuristics</li>
+      <li>Flags whether a factory already has representation in Egypt</li>
+      <li>Tracks who you contacted, who replied, who went silent</li>
+      <li>Knows Canton Fair phases and calendar, plus other major trade shows in China</li>
+      <li>Deep knowledge of your target categories: outdoor grills and griddles, golf carts, electric vehicles, concentrate juice and vegetable processing machines</li>
+    </ul>
+
+    <h4>Connections</h4>
+    <ul>
+      <li>Alibaba, Made-in-China, Global Sources (scraping)</li>
+      <li>Chinese business registry services</li>
+      <li>Gmail for outreach</li>
+      <li>Excel for price comparison sheets</li>
+    </ul>
+
+    <h4>Honest limits</h4>
+    <ul>
+      <li>WeChat has no automation. She drafts the message, you send it manually. Platform limit, not hers</li>
+      <li>Factory verification is roughly 80 percent accurate on public signals. A final video tour or in-person visit is still best before a big order</li>
+      <li>Prices on B2B listings are anchors, not real quotes. Real FOB prices come back when she sends the RFQ</li>
+    </ul>
+
+    <h4>What you will need to provide</h4>
+    <ul>
+      <li>Any existing supplier contacts or past RFQs (gives her a head start)</li>
+      <li>Product specs or target price points for the categories you want to source</li>
+      <li>Optional: a premium Chinese business registry subscription (~$240-600 per year) if you want deeper factory verification. Free public signals are solid for most checks</li>
+    </ul>
+
+    <div class="outcome">
+      <strong>60-day outcome:</strong> You walk into any product category cold. 48 hours later you have 5 real factory contacts, a clean FOB price comparison, and a signal on which factories already have Egypt representation.
+    </div>
+  </div>
+
+  <div class="agent">
+    <div class="agent-head">
+      <div class="agent-name">Amie (Investments)</div>
+      <div class="agent-price">$3,000 normal rate</div>
+    </div>
+    <div class="agent-role">Stock and crypto research, IPO tracking, portfolio watch, Zakat calculations, options strategy explanation.</div>
+
+    <h4>What she does</h4>
+    <ul>
+      <li>Daily portfolio update: stocks and crypto with notable moves</li>
+      <li>Tracks SpaceX IPO news and your full watchlist</li>
+      <li>Specifically tracks XRP and flags major moves</li>
+      <li>Researches any stock, crypto, or company on demand: fundamentals, recent news, analyst targets, technicals</li>
+      <li>Flags market and on-chain events that may affect your positions</li>
+      <li>Calculates annual Zakat correctly across stocks, crypto, and holdings (Islamic finance rules, 2.5 percent above nisab)</li>
+      <li>Explains options strategies (puts, calls, spreads, shorting) and analyzes specific trade setups when you ask</li>
+      <li>Surfaces researched investing ideas that match your watchlist, sectors you follow, and themes you care about</li>
+    </ul>
+
+    <h4>Connections</h4>
+    <ul>
+      <li>Stock market data providers</li>
+      <li>Crypto data providers (full coverage of major assets including XRP)</li>
+      <li>Financial news feeds and market monitoring</li>
+      <li>Telegram for real-time alerts</li>
+    </ul>
+
+    <h4>Honest limits</h4>
+    <ul>
+      <li>She is a research agent, not a licensed advisor. Surfaces opportunities, explains strategies, flags patterns, calculates Zakat. Every buy or sell decision stays yours. This protects you legally and keeps her honest</li>
+      <li>Stock prices are 15 minutes delayed on the free tier (fine for tracking, not for day trading). If you want real-time, we add a paid market data subscription</li>
+      <li>Portfolio tracking starts from monthly brokerage statements. Live brokerage account linking is possible but adds cost, so we start with the monthly upload approach</li>
+    </ul>
+
+    <h4>What you will need to provide</h4>
+    <ul>
+      <li>Your current holdings to start her off (stocks, crypto, approximate sizes)</li>
+      <li>Monthly brokerage statements going forward</li>
+      <li>Your watchlist: tickers, themes, sectors, events you want monitored (SpaceX, XRP, etc.)</li>
+      <li>Your risk tolerance and investing style, so she filters signal from noise</li>
+      <li>Optional: paid real-time market data (~$50-150 per month) if you want live prices instead of 15-min-delayed</li>
+    </ul>
+
+    <div class="outcome">
+      <strong>60-day outcome:</strong> You never miss SpaceX IPO news or a major XRP move. Your Zakat is calculated correctly every year without you thinking about it. Every week she surfaces a researched opportunity that matches your watchlist and themes.
+    </div>
+  </div>
+
+  <div class="agent">
+    <div class="agent-head">
+      <div class="agent-name">AI Usage Coach</div>
+      <div class="agent-price">Included</div>
+    </div>
+    <div class="agent-role">Your personal tutor on how to actually get the best out of AI, specifically the agents we are building for you.</div>
+
+    <h4>What it does</h4>
+    <ul>
+      <li>Teaches you the fundamentals of prompting: how to phrase requests, what context to give, how to iterate when the answer is not quite right</li>
+      <li>Explains specifically how each of your five agents works best: what information JLO needs for a better brief, what Nancy needs to give you a sharper feasibility study, what Jarvis needs when you upload a statement, and so on</li>
+      <li>On-call 24/7. Any time you are not getting the answer you want from an agent, ask the Coach and it will tell you why and how to rephrase</li>
+      <li>Trained on current best practices for prompting large language models, updated as the field evolves</li>
+    </ul>
+
+    <h4>Honest limits</h4>
+    <ul>
+      <li>It is a coach, not a magician. It can teach you the skill, but you still have to use your agents to build the habit</li>
+    </ul>
+
+    <h4>What you will need to provide</h4>
+    <ul>
+      <li>Nothing. It is ready for you on day one. Ask it questions, follow its guidance, and you get sharper with your agents faster</li>
+    </ul>
+
+    <div class="outcome">
+      <strong>Why this matters:</strong> The biggest reason AI disappoints people is not the AI. It is how they use it. This coach makes sure you get full value from day one instead of spending six months figuring out how to prompt properly.
+    </div>
+  </div>
+
+  <h2 class="no-line">Honest Limits (Cross-Platform)</h2>
+  <div class="limits">
+    <h3>What this platform cannot do today</h3>
+    <p>I prefer telling you the limits up front instead of overselling and disappointing you after signing:</p>
+    <ul>
+      <li><strong>WeChat automation is blocked at the platform level.</strong> No provider can legitimately automate WeChat. Zepy drafts messages, you send them manually</li>
+      <li><strong>Amie does not give specific buy or sell advice.</strong> She is research, not a financial advisor. Final trading decisions are yours. This is a legal line and it protects you</li>
+      <li><strong>NADA Composite data is licensed.</strong> Jarvis benchmarks against the 20-group reports you share with us. This is how every dealer uses NADA data anyway</li>
+      <li><strong>The "friend" feeling takes time.</strong> Week one feels helpful. By week three it feels personal. By week six it feels like a team member</li>
+    </ul>
+    <p style="margin-top: 16px;">As AI and the tools behind it improve, some of these limits will go away. On the continuous-improvement tier (below), those improvements are included automatically.</p>
+  </div>
+
+  <hr class="divider">
+
+  <h2 class="no-line">Investment</h2>
+
+  <h3 style="margin-top: 24px;">Setup Fee</h3>
+  <p style="color: var(--text-dim); font-size: 14px; margin-top: -8px;">
+    These are the prices we would normally charge to build an agent like this for any client. For you, the total comes down substantially. That discount is personal, not a bundle deal.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Agent</th>
+        <th>Normal rate</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>JLO Master</td><td>$4,000</td></tr>
+      <tr><td>Nancy (Egypt)</td><td>$3,500</td></tr>
+      <tr><td>Jarvis (Car Business)</td><td>$5,000</td></tr>
+      <tr><td>Zepy (China)</td><td>$3,500</td></tr>
+      <tr><td>Amie (Investments)</td><td>$3,000</td></tr>
+      <tr><td>AI Usage Coach</td><td>Included bonus</td></tr>
+      <tr class="total"><td>Total at normal rates</td><td>$19,000</td></tr>
+      <tr class="bundle"><td>Your price</td><td>$8,000 USD</td></tr>
+    </tbody>
+  </table>
+
+  <div class="setup-hero">
+    <div class="label">One-Time Build Fee</div>
+    <div class="big">$8,000 USD</div>
+    <div class="strike">Normally $19,000 at standard rates</div>
+  </div>
+
+  <h3 style="margin-top: 60px;">Monthly Retainer (two options)</h3>
+  <p>Pick the tier that fits how you want the system to evolve over time.</p>
+
+  <div class="pricing-grid">
+    <div class="tier">
+      <div class="tier-badge">Option A</div>
+      <div class="tier-price">$900 <span class="unit">USD / month</span></div>
+      <div class="tier-desc">System operated and maintained as delivered.</div>
+      <ul>
+        <li>Access to the best AI models available today, powering every agent</li>
+        <li>All six agents live and running</li>
+        <li>Infrastructure, hosting, databases, voice, and API costs covered by us</li>
+        <li>Bug fixes and monitoring included</li>
+        <li>Up to one small feature addition per month (a new connection, a small tweak)</li>
+        <li>Direct support from me, whenever you need it</li>
+      </ul>
+    </div>
+
+    <div class="tier hi">
+      <div class="tier-badge">Option B, recommended</div>
+      <div class="tier-price">$1,200 <span class="unit">USD / month</span></div>
+      <div class="tier-desc">Everything in Option A, plus continuous improvement as AI evolves.</div>
+      <ul>
+        <li>Everything in Option A</li>
+        <li>As the AI models improve and better brains launch, I upgrade your agents automatically to match what we are running in our internal operations at Atasof AI</li>
+        <li>New capabilities we build into our own internal system also get rolled into yours</li>
+        <li>As today's limits disappear with new tech (richer Whoop data, WeChat alternatives, whatever comes next), they get added for free</li>
+        <li>Your platform stays at the frontier instead of slowly becoming outdated</li>
+      </ul>
+    </div>
+  </div>
+
+  <p style="margin-top: 32px; color: var(--text-dim); font-size: 14px;">
+    The reason this is the price: you get access to the best AI models available today, a big brain trained specifically on your businesses, every specialist tool wired in, the custom platform itself, secure storage for your data, and the full infrastructure running around the clock. We cover every cost on our side. That is why the number looks like what it does.
+  </p>
+  <p style="color: var(--text-dim); font-size: 14px;">
+    On usage, the main thing to watch is voice. Voice runs on the highest-end models and costs more per minute, so the retainer covers around 25 minutes a day on voice, which is plenty for how most people use the push-to-talk feature. For chat, do not worry about the cost. The retainer is set up to cover normal to heavy chat use. The only way you would end up paying more is if usage got extremely heavy, like more than three hours a day of chat every single day, which is very unlikely in real life.
+  </p>
+
+  <h2>Timeline</h2>
+  <ul>
+    <li><strong>Week 1 to 2:</strong> Platform setup (application configuration, voice, your branding), JLO master assembled, Google and Telegram and WhatsApp connections live</li>
+    <li><strong>Week 2 to 3:</strong> First working version. JLO delivers your morning brief daily, all specialist agents online in basic form, you can start using the system</li>
+    <li><strong>Week 3 to 5:</strong> Deep training of each specialist on your uploaded documents, fine-tuning of tone, connections tightened, integrations polished</li>
+    <li><strong>Week 5 to 6:</strong> Final polish, optimization, handoff, and AI Usage Coach onboarding session</li>
+  </ul>
+  <p style="color: var(--text-dim);">Full build window: 4 to 6 weeks. You will be using an early working version by week three.</p>
+
+  <h2>Summary: Everything You Need To Provide</h2>
+  <p>Each agent's section above lists its specific requirements. Here it is all in one place:</p>
+  <ul>
+    <li>Access to Google Workspace (calendar, email, drive)</li>
+    <li>Whoop account login (you keep your existing Whoop subscription)</li>
+    <li>Your 20-group NADA Composite reports (for Jarvis). If you have 20-group access you likely already have these. If not, 20-group membership is separate from this retainer</li>
+    <li>Monthly financial statements for both dealerships, back to 2022 (for Jarvis)</li>
+    <li>Factory incentive program docs from your Infiniti and Subaru dealer portals (for Jarvis)</li>
+    <li>Any supplier contacts, past RFQs, or sourcing docs you already have (for Zepy)</li>
+    <li>Any Egyptian regulation docs or industry reports you have on hand (for Nancy)</li>
+    <li>A list of your current portfolio holdings and watchlist (for Amie)</li>
+    <li>Medication list + schedule, favorite teams list, flight itineraries, recurring reminders (for JLO)</li>
+    <li>Your preferences: what time you want the morning brief, tone you prefer, how warm or formal JLO should feel</li>
+  </ul>
+  <p style="color: var(--text-dim); font-size: 14px;">
+    Optional paid third-party subscriptions (market data, Chinese business registry, premium market research) are not required, and I source or recommend only if you want deeper coverage than the defaults.
+  </p>
+
+  <h2>What Happens After</h2>
+  <p>
+    Once the build is done, you have a private AI team that works for you every day. I operate and maintain it. You focus on running your businesses. As the technology improves, so does your platform (on the Option B tier).
+  </p>
+  <p>
+    If at any point you want to add a new agent (say, a real estate research agent or a dedicated hiring agent for your dealerships), we quote that separately. If you want to add small new capabilities to an existing agent (like having JLO book restaurant reservations for you, or adding a new data source Amie watches), that is included in your retainer.
+  </p>
+
+  <footer class="close">
+    <p>
+      Because of our connection, I am giving you the best price I can offer, the same way I did with the first JLO. This is not a number I would put in front of anyone else. For $8,000 you are getting six specialist agents, months of build time, and a platform that keeps getting smarter over time. I want to build this so you actually get real value out of it, not just another tool you stop opening after a month.
+    </p>
+    <p>
+      Take your time to decide. Honestly, I cannot hold this price forever. Demand for custom agent builds is high right now and we are getting busier every week. This price is good for the next two weeks. After that, I cannot guarantee I can take this on at the same number, because between current projects and new ones coming in, it gets hard to justify on my side.
+    </p>
+    <p>
+      If you want to move forward, just let me know. We start with 50 percent of the setup fee and go from there. Any questions or thoughts, I am happy to talk through them with you.
+    </p>
+    <p class="sig">William<br>Atasof AI</p>
+  </footer>
+
+</div>
+</body>
+</html>
